@@ -1,8 +1,10 @@
 substitutions:
   _REGION: us-central1
   _PROJECT_ID: metal-arc-481413-g9
-  _REPO: ob-docker
-  _CLUSTER: ob-gke
+  # Use substitutions to make repo/cluster names configurable per environment
+  # Replace these in your Cloud Build trigger or env-specific tfvars as needed
+  _REPO: "${_NAME_PREFIX:-ob}-${_ENV:-dev}-docker"
+  _CLUSTER: "${_NAME_PREFIX:-ob}-${_ENV:-dev}-gke"
   _ZONE: us-central1-f
 
 steps:
