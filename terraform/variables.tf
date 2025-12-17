@@ -24,3 +24,9 @@ variable "admin_cidr" {
   description = "CIDR allowed to access GKE control plane"
   type        = string
 }
+
+variable "name_prefix" {
+  description = "Short prefix used for resource names (e.g. project or app shortname)"
+  type        = string
+  default     = "ob"
+}

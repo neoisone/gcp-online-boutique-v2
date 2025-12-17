@@ -18,6 +18,11 @@ variable "cluster_name" {
   type        = string
 }
 
+variable "name_prefix" {
+  description = "Name prefix passed from root for consistent resource naming"
+  type        = string
+}
+
 variable "vpc_id" {
   description = "VPC ID"
   type        = string

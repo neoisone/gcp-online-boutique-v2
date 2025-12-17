@@ -11,8 +11,8 @@ provider "google" {
 
 module "network" {
   source      = "./modules/network"
-  vpc_name    = "ob-vpc"
-  subnet_name = "ob-subnet"
+  vpc_name    = "${var.name_prefix}-${var.env}-vpc"
+  subnet_name = "${var.name_prefix}-${var.env}-subnet"
   region      = var.region
 }
 
@@ -27,7 +27,8 @@ module "gke" {
   region       = var.region
   zone         = var.zone
   env          = var.env
-  cluster_name = "ob-gke"
+  cluster_name = "${var.name_prefix}-${var.env}-gke"
+  name_prefix  = var.name_prefix
 
   vpc_id     = module.network.vpc_id
   subnet_id  = module.network.subnet_id

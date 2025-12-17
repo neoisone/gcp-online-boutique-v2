@@ -12,8 +12,8 @@ terraform {
 #######################################
 
 resource "google_service_account" "gke_nodes" {
-  account_id   = "gke-nodes-sa"
-  display_name = "GKE Node Service Account"
+  account_id   = "${var.name_prefix}-gke-nodes-sa"
+  display_name = "${var.name_prefix} GKE Node Service Account"
 }
 
 resource "google_project_iam_member" "logging" {
@@ -70,7 +70,7 @@ resource "google_container_cluster" "gke" {
 #######################################
 
 resource "google_container_node_pool" "primary" {
-  name     = "primary-pool"
+  name     = "${var.name_prefix}-${var.env}-primary-pool"
   cluster  = google_container_cluster.gke.name
   location = var.zone
 
@@ -79,8 +79,8 @@ resource "google_container_node_pool" "primary" {
   node_config {
     machine_type    = "e2-standard-4"
     service_account = google_service_account.gke_nodes.email
-    disk_size_gb = 50
-    disk_type    = "pd-standard"
+    disk_size_gb    = 50
+    disk_type       = "pd-standard"
     oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
 
     labels = {

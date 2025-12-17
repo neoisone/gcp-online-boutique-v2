@@ -1,0 +1,34 @@
+name: Mock CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  mock-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Print context (mock)
+        run: |
+          echo "This is a mock CI workflow for demonstration only. No deploys will be performed."
+          echo "Repository: $GITHUB_REPOSITORY"
+
+      - name: Mock: Terraform fmt check
+        run: |
+          echo "Running 'terraform fmt -check' (mock)"
+          # In real CI you would install terraform and run: terraform fmt -check -recursive ./terraform
+
+      - name: Mock: Build container image
+        run: |
+          echo "Building container image (mock)"
+          echo "docker build -t ghcr.io/${{ github.repository_owner }}/
+          example:latest ./services/frontend  # (not executed)"
+
+      - name: Mock: Run tests
+        run: |
+          echo "Running unit/integration tests (mock)"

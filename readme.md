@@ -162,6 +162,37 @@ What was demonstrated
 - CI/CD was intentionally kept simple for clarity while still demonstrating
 - the full deployment lifecycle.
 
+Naming Conventions
+------------------
+
+This repository adopts a concise, environment-aware prefixing pattern for
+cloud resources to improve readability and reduce accidental name collisions.
+
+- **Pattern:** `${name_prefix}-${env}-<resource>`
+- **Default:** `name_prefix` defaults to `ob` (can be overridden via variables)
+- **Example:** `ob-dev-gke`, `ob-dev-primary-pool`, `ob-dev-vpc`
+
+The Terraform root variable `name_prefix` (in `terraform/variables.tf`) is
+passed into modules and used to build resource names. This keeps the
+architecture identical while improving consistency and making environments
+explicit in resource identifiers.
+
+Mock GitHub Actions CI
+----------------------
+
+A demonstration GitHub Actions workflow was added at
+`.github/workflows/mock-ci.yml`. It is intentionally non-destructive and
+prints the intended CI steps rather than performing real deployments. The
+purpose is to show how a GitHub-hosted CI would structure checks (formatting,
+build, tests) before delegating trusted deployments to Cloud Build or other
+trusted runners with appropriate network access to private GKE control planes.
+
+How to change naming prefix
+--------------------------
+
+Edit `terraform/variables.tf` or pass `-var="name_prefix=yourprefix"` when
+running Terraform commands to change the prefix used for resource names.
+
 Known Issues & Lessons Learned
 ------------------------------
 
