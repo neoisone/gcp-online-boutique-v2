@@ -18,6 +18,13 @@ variable "cluster_name" {
   type        = string
 }
 
+variable "node_count" {
+  description = "Number of nodes in the primary GKE node pool"
+  type        = number
+  default     = 1
+}
+
+
 variable "name_prefix" {
   description = "Name prefix passed from root for consistent resource naming"
   type        = string
