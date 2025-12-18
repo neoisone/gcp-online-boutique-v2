@@ -16,6 +16,7 @@ resource "google_service_account" "gke_nodes" {
   display_name = "${var.name_prefix} GKE Node Service Account"
 }
 
+
 resource "google_project_iam_member" "logging" {
   project = var.project_id
   role    = "roles/logging.logWriter"
@@ -38,6 +39,9 @@ resource "google_container_cluster" "gke" {
 
   network    = var.vpc_id
   subnetwork = var.subnet_id
+
+  deletion_protection = true
+
 
   # We manage node pools separately
   remove_default_node_pool = true
@@ -84,6 +88,9 @@ resource "google_container_cluster" "gke" {
     ignore_changes = [
       initial_node_count
     ]
+
+    prevent_destroy = true
+
   }
 }
 
@@ -119,3 +126,5 @@ resource "google_container_node_pool" "primary" {
     auto_upgrade = true
   }
 }
+
+
