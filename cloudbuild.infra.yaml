@@ -1,0 +1,48 @@
+substitutions:
+  _ENV: dev
+  _NAME_PREFIX: ob
+  _REGION: us-central1
+
+steps:
+  # 1️⃣ Terraform init
+  - name: hashicorp/terraform:1.6.6
+    id: tf-init
+    dir: terraform
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        terraform init -input=false
+
+  # 2️⃣ Terraform validate
+  - name: hashicorp/terraform:1.6.6
+    id: tf-validate
+    dir: terraform
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        terraform validate
+
+  # 3️⃣ Terraform plan
+  - name: hashicorp/terraform:1.6.6
+    id: tf-plan
+    dir: terraform
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        terraform plan -input=false -out=tfplan
+
+  # 4️⃣ Terraform apply (auto)
+  - name: hashicorp/terraform:1.6.6
+    id: tf-apply
+    dir: terraform
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        terraform apply -input=false -auto-approve tfplan
+
+options:
+  logging: CLOUD_LOGGING_ONLY

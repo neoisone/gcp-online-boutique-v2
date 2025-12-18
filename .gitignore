@@ -11,3 +11,13 @@ crash.log
 .DS_Store
 .vscode/
 .idea/
+# Terraform
+terraform/*.out
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+
+# Local tooling
+upstream-microservices/
+
+# OS
+.DS_Store
