@@ -39,31 +39,57 @@ resource "google_container_cluster" "gke" {
   network    = var.vpc_id
   subnetwork = var.subnet_id
 
+  # We manage node pools separately
   remove_default_node_pool = true
   initial_node_count       = 1
 
+  # VPC-native cluster (required for private clusters)
   ip_allocation_policy {
     cluster_secondary_range_name  = "pods"
     services_secondary_range_name = "services"
   }
 
+  # Private nodes, public control plane endpoint
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false
     master_ipv4_cidr_block  = "172.16.0.0/28"
   }
 
+  # Control plane access
   master_authorized_networks_config {
+    # Admin (your laptop / VPN)
     cidr_blocks {
       cidr_block   = var.admin_cidr
-      display_name = "admin"
+      display_name = "admin-access"
+    }
+
+    # CI/CD access (Cloud Build) — DEMO ONLY
+    cidr_blocks {
+      cidr_block   = "0.0.0.0/0"
+      display_name = "cloud-build-demo-access"
     }
   }
 
+  # Workload Identity (best practice)
   workload_identity_config {
     workload_pool = "${var.project_id}.svc.id.goog"
   }
+
+  # Recommended cluster hardening defaults
+  logging_service    = "logging.googleapis.com/kubernetes"
+  monitoring_service = "monitoring.googleapis.com/kubernetes"
+
+  lifecycle {
+    ignore_changes = [
+      initial_node_count
+    ]
+  }
 }
+
+
+
+
 
 #######################################
 # Node Pool

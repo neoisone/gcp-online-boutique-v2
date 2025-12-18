@@ -1,8 +1,8 @@
 substitutions:
-  _ENV: dev
-  _NAME_PREFIX: ob
-  _REGION: us-central1
+  _PROJECT_ID: metal-arc-481413-g9
+  _REGION: us-west1
   _ZONE: us-west1-b
+  _ADMIN_CIDR: "80.200.117.55/32"   # your IP
 
 steps:
   # 1️⃣ Terraform init
@@ -33,9 +33,15 @@ steps:
     args:
       - -c
       - |
-        terraform plan -input=false -out=tfplan
+        terraform plan \
+          -input=false \
+          -out=tfplan \
+          -var="project_id=${_PROJECT_ID}" \
+          -var="region=${_REGION}" \
+          -var="zone=${_ZONE}" \
+          -var="admin_cidr=${_ADMIN_CIDR}"
 
-  # 4️⃣ Terraform apply (auto)
+  # 4️⃣ Terraform apply
   - name: hashicorp/terraform:1.6.6
     id: tf-apply
     dir: terraform
@@ -43,7 +49,10 @@ steps:
     args:
       - -c
       - |
-        terraform apply -input=false -auto-approve tfplan
+        terraform apply \
+          -input=false \
+          -auto-approve \
+          tfplan
 
 options:
   logging: CLOUD_LOGGING_ONLY
