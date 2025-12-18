@@ -9,6 +9,15 @@ provider "google" {
   region  = var.region
 }
 
+resource "google_artifact_registry_repository" "frontend_repo" {
+  location      = "us-central1"
+  repository_id = "ob-dev-docker"
+  format        = "DOCKER"
+
+  description = "Docker images for Online Boutique frontend"
+}
+
+
 module "network" {
   source      = "./modules/network"
   vpc_name    = "${var.name_prefix}-${var.env}-vpc"
