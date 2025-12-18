@@ -2,6 +2,7 @@ substitutions:
   _ENV: dev
   _NAME_PREFIX: ob
   _REGION: us-central1
+  _ZONE: us-west1-b
 
 steps:
   # 1️⃣ Terraform init

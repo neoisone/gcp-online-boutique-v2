@@ -1,6 +1,6 @@
 substitutions:
   _REGION: us-central1
-  _ZONE: us-central1-f
+  _ZONE: us-west1-b
 
   _ENV: dev
   _NAME_PREFIX: ob
